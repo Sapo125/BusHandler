@@ -30,18 +30,18 @@ namespace BusHandler.Controllers
                 var priviligedUsers=_ctx.Users.Take(28).ToList();//temporaneo
                 int i = 0;
                 List<Reservation> reservations = new List<Reservation>();
-                priviligedUsers.ForEach(p => p.Childrens.ForEach(c =>
+                priviligedUsers.ForEach(p => p.Children.ForEach(c =>
                 {
                     reservations.Add(new Reservation
                     {
-                        ChildrenId = c.Id,
+                        ChildrenId = c.ChildrenId,
                         SeatId = i,
                         Date = date,
                         IsMorning = true
                     });
                     reservations.Add(new Reservation
                     {
-                        ChildrenId = c.Id,
+                        ChildrenId = c.ChildrenId,
                         SeatId = i,
                         Date = date,
                         IsMorning = false

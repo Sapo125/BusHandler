@@ -19,8 +19,9 @@ namespace BusHandler.Controllers
         }
 
         [HttpGet]
+        [Route("GetAllForFamily")]
         //[Authorize]
-        public async Task<IActionResult> GetAllForFamily([FromRoute]int familyUserId)
+        public async Task<IActionResult> GetAllForFamily([FromRoute]string familyUserId)
         {
             // Recupero i figli della famiglia e le loro prenotazioni
             var reservations = await _ctx.Childrens
@@ -44,8 +45,9 @@ namespace BusHandler.Controllers
         }
 
         [HttpGet]
+        [Route("GetAllForFamilyForADate")]
         //[Authorize]
-        public async Task<IActionResult> GetAllForFamilyForADate([FromRoute] int familyUserId, DateOnly date)
+        public async Task<IActionResult> GetAllForFamilyForADate([FromRoute] string familyUserId, DateOnly date)
         {
             // Recupero i figli della famiglia e le loro prenotazioni
             var reservations = await _ctx.Childrens
@@ -69,7 +71,7 @@ namespace BusHandler.Controllers
         }
         [HttpPost]
         [Route("GenerateReservationForWeek")]
-        public async Task<IActionResult> GenerateReservationForWeek()
+        public IActionResult GenerateReservationForWeek()
         {
             var priviligedUsers = _ctx.Users.Take(28).ToList();//temporaneo
             int i = 0;
@@ -77,29 +79,30 @@ namespace BusHandler.Controllers
             var date=DateTime.Now;
             for(int j = 1; j < 8; j++)
             {
-                priviligedUsers.ForEach(p => p.Childrens.ForEach(c =>
+                priviligedUsers.ForEach(p => p.Children.ForEach(c =>
                 {
                     reservations.Add(new Reservation
                     {
-                        ChildrenId = c.Id,
+                        ChildrenId = c.ChildrenId,
                         SeatId = i,
-                        Date = date.AddDays(j+7),
+                        Date = DateOnly.FromDateTime(date.AddDays(j+7)),
                         IsMorning = true
                     });
                     reservations.Add(new Reservation
                     {
-                        ChildrenId = c.Id,
+                        ChildrenId = c.ChildrenId,
                         SeatId = i,
-                        Date = date.AddDays(j + 7),
+                        Date = DateOnly.FromDateTime(date.AddDays(j + 7)),
                         IsMorning = false
                     });
                     i++;
                 }));
-                _ctx.Reservations.AddRange(reservations);
+                _ctx.Reservations.AddRangeAsync(reservations);
             }
             return Ok(reservations);
         }
         [HttpPost]
+        [Route("Create")]
         public async Task<IActionResult> Create([FromBody] int childrenId, DateOnly date, bool isMorning)
         {
             // Verifico se il bambino esiste
@@ -135,6 +138,7 @@ namespace BusHandler.Controllers
         }
 
         [HttpDelete("{childrenId}/{seatId}")]
+        [Route("DeleteReservation")]
         //[Authorize]
         public async Task<IActionResult> DeleteReservation(int childrenId, int seatId)
         {
