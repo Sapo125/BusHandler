@@ -4,6 +4,6 @@
     {
         public int SeatId { get; set; }
         public required string Code { get; set; }
-        public List<Reservations>? Reservations { get; set; }
+        public List<Reservation>? Reservations { get; set; }
     }
 }

@@ -43,7 +43,7 @@ namespace BusHandler.Migrations
 
                     b.HasKey("ChildrenId");
 
-                    b.ToTable("Childrens");
+                    b.ToTable("Childrens", (string)null);
                 });
 
             modelBuilder.Entity("BusHandler.Data.FamilyUser", b =>
@@ -135,7 +135,7 @@ namespace BusHandler.Migrations
 
                     b.HasIndex("SeatId");
 
-                    b.ToTable("Reservations");
+                    b.ToTable("Reservations", (string)null);
                 });
 
             modelBuilder.Entity("BusHandler.Data.Seat", b =>
@@ -152,7 +152,7 @@ namespace BusHandler.Migrations
 
                     b.HasKey("SeatId");
 
-                    b.ToTable("Seats");
+                    b.ToTable("Seats", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

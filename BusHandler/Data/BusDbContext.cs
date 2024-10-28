@@ -9,6 +9,6 @@ namespace BusHandler.Data
 
         public DbSet<Children> Childrens { get; set; }
         public DbSet<Seat> Seats { get; set; }
-        public DbSet<Reservations> Reservations { get; set; }
+        public DbSet<Reservation> Reservations { get; set; }
     }
 }
