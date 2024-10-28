@@ -7,7 +7,9 @@ namespace BusHandler.Data
         public int ChildrenId { get; set; }
         public required string Name { get; set; }
         public required string Surname { get; set; }
-        public int FamilyUserId { get; set; }
+        [ForeignKey("FamilyUser")]
+        public string? FamilyUserId { get; set; }
+        public FamilyUser? FamilyUser { get; set; }
         public List<Reservation>? Reservations { get; set; }
     }
 }

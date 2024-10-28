@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BusHandler.Migrations
 {
     [DbContext(typeof(BusDbContext))]
-    [Migration("20241028082816_bus")]
-    partial class bus
+    [Migration("20241028102209_authfix")]
+    partial class authfix
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,8 +33,8 @@ namespace BusHandler.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ChildrenId"));
 
-                    b.Property<int>("FamilyUserId")
-                        .HasColumnType("int");
+                    b.Property<string>("FamilyUserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -45,6 +45,8 @@ namespace BusHandler.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ChildrenId");
+
+                    b.HasIndex("FamilyUserId");
 
                     b.ToTable("Childrens");
                 });
@@ -67,9 +69,6 @@ namespace BusHandler.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
-
-                    b.Property<int>("FamilyUserId")
-                        .HasColumnType("int");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -291,6 +290,15 @@ namespace BusHandler.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("BusHandler.Data.Children", b =>
+                {
+                    b.HasOne("BusHandler.Data.FamilyUser", "FamilyUser")
+                        .WithMany("Children")
+                        .HasForeignKey("FamilyUserId");
+
+                    b.Navigation("FamilyUser");
+                });
+
             modelBuilder.Entity("BusHandler.Data.Reservation", b =>
                 {
                     b.HasOne("BusHandler.Data.Children", null)
@@ -360,6 +368,11 @@ namespace BusHandler.Migrations
             modelBuilder.Entity("BusHandler.Data.Children", b =>
                 {
                     b.Navigation("Reservations");
+                });
+
+            modelBuilder.Entity("BusHandler.Data.FamilyUser", b =>
+                {
+                    b.Navigation("Children");
                 });
 
             modelBuilder.Entity("BusHandler.Data.Seat", b =>
