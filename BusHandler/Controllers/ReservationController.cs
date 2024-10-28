@@ -18,6 +18,23 @@ namespace BusHandler.Controllers
             _ctx = context;
         }
 
+        [HttpDelete("{childrenId}/{seatId}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> DeleteReservation(int childrenId, int seatId)
+        {
+            var res = await _ctx.Reservations.FirstOrDefaultAsync(r => r.ChildrenId == childrenId && r.SeatId == seatId);
+
+            if (res == null)
+            {
+                return NotFound("Reservation not found.");
+            }
+
+            _ctx.Reservations.Remove(res);
+            await _ctx.SaveChangesAsync();
+
+            return Ok("Reservation deleted successfully.");
+        }
+
         [HttpGet]
         //[Authorize]
         public async Task<IActionResult> GetAllForFamily([FromRoute]int familyUserId)

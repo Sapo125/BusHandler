@@ -8,6 +8,6 @@ namespace BusHandler.Data
         public required string Name { get; set; }
         public required string Surname { get; set; }
         public int FamilyUserId { get; set; }
-        public List<Reservation>? Reservations { get; set; }
+        public List<Reservations>? Reservations { get; set; }
     }
 }

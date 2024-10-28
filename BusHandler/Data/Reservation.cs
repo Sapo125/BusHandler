@@ -3,7 +3,7 @@
 namespace BusHandler.Data
 {
     [PrimaryKey(nameof(ChildrenId), nameof(SeatId))]
-    public class Reservation
+    public class Reservations
     {
         public int ChildrenId { get; set; }
         public int SeatId { get; set; }
