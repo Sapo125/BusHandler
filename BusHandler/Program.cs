@@ -9,7 +9,7 @@ using AspNetCore.Swagger.Themes;
 var builder = WebApplication.CreateBuilder(args);
 
 var configuration = builder.Configuration;
-
+builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
@@ -74,10 +74,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI(Style.Dark);
 }
-
+app.MapControllers();
 app.UseAuthentication();
 app.UseAuthorization();
-
+app.UseHttpsRedirection();
 app.MapGet("/", () => "Hello World!");
 
 app.Run();
