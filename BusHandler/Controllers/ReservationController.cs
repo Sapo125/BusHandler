@@ -43,6 +43,31 @@ namespace BusHandler.Controllers
             return Ok(reservations);
         }
 
+        [HttpGet]
+        //[Authorize]
+        public async Task<IActionResult> GetAllForFamilyForADate([FromRoute] int familyUserId, DateOnly date)
+        {
+            // Recupero i figli della famiglia e le loro prenotazioni
+            var reservations = await _ctx.Childrens
+                .Where(child => child.FamilyUserId == familyUserId && child.Reservations.Any(reservation => reservation.Date == date))
+                .Select(child => new
+                {
+                    child.Name,
+                    child.Surname,
+                    Reservations = child.Reservations.Select(reservation => new
+                    {
+                        reservation.Seat.Code,
+                        reservation.Date
+                    }).ToList()
+                })
+                .ToListAsync();
+
+            if (reservations == null || reservations.Count() == 0)
+                return NotFound("Nessuna prenotazione trovata per la famiglia.");
+
+            return Ok(reservations);
+        }
+
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] int childrenId, DateOnly date, bool isMorning)
         {
