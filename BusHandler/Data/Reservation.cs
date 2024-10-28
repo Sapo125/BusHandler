@@ -9,5 +9,7 @@ namespace BusHandler.Data
         public int SeatId { get; set; }
         public DateOnly Date { get; set; }
         public bool IsMorning;
+        public Children? children { get; set; }
+        public Seat? Seat { get; set; }
     }
 }
